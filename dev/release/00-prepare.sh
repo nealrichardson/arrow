@@ -103,7 +103,7 @@ update_versions() {
 
   cd "${SOURCE_DIR}/../../r"
   sed -i.bak -E -e \
-    "s/^# arrow .+/# arrow ${r_version}/" \
+    "0,/^# arrow /s/^# arrow .+/# arrow ${r_version}/" \
     NEWS.md
   rm -f NEWS.md.bak
   git add NEWS.md
