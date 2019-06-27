@@ -101,6 +101,14 @@ update_versions() {
   git add DESCRIPTION
   cd -
 
+  cd "${SOURCE_DIR}/../../r"
+  sed -i.bak -E -e \
+    "s/^# arrow .+/# arrow ${r_version}/" \
+    NEWS.md
+  rm -f NEWS.md.bak
+  git add NEWS.md
+  cd -
+
   cd "${SOURCE_DIR}/../../ruby"
   sed -i.bak -E -e \
     "s/^  VERSION = \".+\"/  VERSION = \"${version}\"/g" \
