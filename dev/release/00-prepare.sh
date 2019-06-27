@@ -102,9 +102,19 @@ update_versions() {
   cd -
 
   cd "${SOURCE_DIR}/../../r"
-  sed -i.bak -E -e \
-    "0,/^# arrow /s/^# arrow .+/# arrow ${r_version}/" \
-    NEWS.md
+  if [[ ${r_version} == *".9000" ]]; then
+    # Add a news entry for the new dev version
+    echo "dev"
+    sed -i.bak -E -e \
+      "0,/^# arrow /s/^(# arrow .+)/# arrow ${r_version}\n\n\1/" \
+      NEWS.md
+  else
+    # Replace dev version with release version
+    echo "release"
+    sed -i.bak -E -e \
+      "0,/^# arrow /s/^# arrow .+/# arrow ${r_version}/" \
+      NEWS.md
+  fi
   rm -f NEWS.md.bak
   git add NEWS.md
   cd -
