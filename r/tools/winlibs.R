@@ -29,7 +29,7 @@ if(!file.exists(sprintf("windows/arrow-%s/include/arrow/api.h", VERSION))){
   } else {
     # Download static arrow from rwinlib
     if(getRversion() < "3.3.0") setInternet2()
-    download.file(sprintf("https://github.com/nealrichardson/rwinlib-arrow/archive/master.zip", VERSION), "lib.zip", quiet = TRUE)
+    download.file("https://github.com/nealrichardson/rwinlib-arrow/archive/master.zip", "lib.zip", quiet = TRUE)
   }
   dir.create("windows", showWarnings = FALSE)
   unzip("lib.zip", exdir = "windows")
