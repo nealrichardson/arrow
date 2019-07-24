@@ -34,4 +34,5 @@ if(!file.exists(sprintf("windows/arrow-%s/include/arrow/api.h", VERSION))){
   dir.create("windows", showWarnings = FALSE)
   unzip("lib.zip", exdir = "windows")
   unlink("lib.zip")
+  file.rename("windows/rwinlib-arrow-master", sprintf("windows/arrow-%s", VERSION))
 }
