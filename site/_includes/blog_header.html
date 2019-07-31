@@ -14,9 +14,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 {% endcomment %}
+{% include rel_url.html %}
 <h1>
   {{ post.title }}
-  <a href="{{ post.url }}" class="permalink" title="Permalink">∞</a>
+  <a href="{{ rel_url }}{{ post.url | replace_first: '/', '' }}" class="permalink" title="Permalink">∞</a>
 </h1>
 
 {% capture discard %}

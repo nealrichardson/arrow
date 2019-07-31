@@ -1,0 +1,11 @@
+{% comment %}
+  Inspired by https://gist.github.com/Ketrel/1f36fca6b4148f7263b3ee8fdb0923e7
+{% endcomment %}
+{% assign rel_url = '' %}
+{% assign temp_depth = page.url | append: 'hackish-solution' | split: '/' | size | minus: 2 %}
+{% for i in (1..temp_depth) %}
+  {% assign rel_url = rel_url | append: "../" %}
+{% endfor %}
+{% if rel_url == '' %}
+  {% assign rel_url = './' %}
+{% endif %}

@@ -23,6 +23,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 {% endcomment %}
 -->
+{% include rel_url.html %}
 
 Python users who upgrade to recently released `pyarrow` 0.12 may find that
 their applications use significantly less memory when converting Arrow string
@@ -86,7 +87,7 @@ overhead. 32-bit integer offsets encodes the position and size of a string
 value in a contiguous chunk of memory:
 
 <div align="center">
-<img src="{{ site.baseurl }}/img/20190205-arrow-string.png"
+<img src="{{ rel_url }}img/20190205-arrow-string.png"
      alt="Apache Arrow string memory layout"
      width="80%" class="img-responsive">
 </div>
@@ -116,7 +117,7 @@ and incrementing their reference counts.
 Schematically, we have the following:
 
 <div align="center">
-<img src="{{ site.baseurl }}/img/20190205-numpy-string.png"
+<img src="{{ rel_url }}img/20190205-numpy-string.png"
      alt="pandas string memory optimization"
      width="80%" class="img-responsive">
 </div>

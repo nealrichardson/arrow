@@ -24,6 +24,8 @@ limitations under the License.
 {% endcomment %}
 -->
 
+{% include rel_url.html %}
+
 *[Javier Luraschi][1] is a software engineer at [RStudio][2]*
 
 Support for Apache Arrow in Apache Spark with R is currently under active
@@ -95,7 +97,7 @@ microbenchmark::microbenchmark(
 ```
 
 <div align="center">
-<img src="{{ site.baseurl }}/img/arrow-r-spark-copying.png"
+<img src="{{ rel_url }}img/arrow-r-spark-copying.png"
      alt="Copying data with R into Spark with and without Arrow"
      width="60%" class="img-responsive">
 </div>
@@ -131,7 +133,7 @@ Unit: seconds
 ```
 
 <div align="center">
-<img src="{{ site.baseurl }}/img/arrow-r-spark-collecting.png"
+<img src="{{ rel_url }}img/arrow-r-spark-collecting.png"
      alt="Collecting data with R from Spark with and without Arrow"
      width="60%" class="img-responsive">
 </div>
@@ -176,7 +178,7 @@ Unit: seconds
  ```
 
 <div align="center">
-<img src="{{ site.base-url }}/img/arrow-r-spark-transforming.png"
+<img src="{{ rel_url }}img/arrow-r-spark-transforming.png"
      alt="Transforming data with R in Spark with and without Arrow"
      width="60%" class="img-responsive">
 </div>

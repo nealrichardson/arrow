@@ -1,5 +1,6 @@
+{% include rel_url.html %}
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-  <a class="navbar-brand" href="{{ site.baseurl }}/"><img src="{{ site.baseurl }}/img/arrow-inverse-300px.png" height="60px"/></a>
+  <a class="navbar-brand" href="{{ rel_url }}"><img src="{{ rel_url }}img/arrow-inverse-300px.png" height="60px"/></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#arrow-navbar" aria-controls="arrow-navbar" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -14,10 +15,10 @@
              Project Links
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdownProjectLinks">
-            <a class="dropdown-item" href="{{ site.baseurl }}/install/">Installation</a>
-            <a class="dropdown-item" href="{{ site.baseurl }}/release/">Releases</a>
-            <a class="dropdown-item" href="{{ site.baseurl }}/faq/">FAQ</a>
-            <a class="dropdown-item" href="{{ site.baseurl }}/blog/">Blog</a>
+            <a class="dropdown-item" href="{{ rel_url }}install/">Installation</a>
+            <a class="dropdown-item" href="{{ rel_url }}release/">Releases</a>
+            <a class="dropdown-item" href="{{ rel_url }}faq/">FAQ</a>
+            <a class="dropdown-item" href="{{ rel_url }}blog/">Blog</a>
             <a class="dropdown-item" href="https://github.com/apache/arrow">Source Code</a>
             <a class="dropdown-item" href="https://issues.apache.org/jira/browse/ARROW">Issue Tracker</a>
           </div>
@@ -32,12 +33,12 @@
             <a class="dropdown-item" href="http://mail-archives.apache.org/mod_mbox/arrow-user/">User Mailing List</a>
             <a class="dropdown-item" href="http://mail-archives.apache.org/mod_mbox/arrow-dev/">Dev Mailing List</a>
             <a class="dropdown-item" href="https://cwiki.apache.org/confluence/display/ARROW">Developer Wiki</a>
-            <a class="dropdown-item" href="{{ site.baseurl }}/committers/">Committers</a>
-            <a class="dropdown-item" href="{{ site.baseurl }}/powered_by/">Powered By</a>
+            <a class="dropdown-item" href="{{ rel_url }}committers/">Committers</a>
+            <a class="dropdown-item" href="{{ rel_url }}powered_by/">Powered By</a>
           </div>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ site.baseurl }}/docs/format/README.html"
+          <a class="nav-link" href="{{ rel_url }}docs/format/README.html"
              role="button" aria-haspopup="true" aria-expanded="false">
              Specification
           </a>
@@ -49,15 +50,15 @@
              Documentation
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdownDocumentation">
-            <a class="dropdown-item" href="{{ site.baseurl }}/docs">Project Docs</a>
-            <a class="dropdown-item" href="{{ site.baseurl }}/docs/python">Python</a>
-            <a class="dropdown-item" href="{{ site.baseurl }}/docs/cpp">C++</a>
-            <a class="dropdown-item" href="{{ site.baseurl }}/docs/java">Java API</a>
-            <a class="dropdown-item" href="{{ site.baseurl }}/docs/c_glib">C GLib API</a>
-            <a class="dropdown-item" href="{{ site.baseurl }}/docs/js">Javascript API</a>
+            <a class="dropdown-item" href="{{ rel_url }}docs">Project Docs</a>
+            <a class="dropdown-item" href="{{ rel_url }}docs/python">Python</a>
+            <a class="dropdown-item" href="{{ rel_url }}docs/cpp">C++</a>
+            <a class="dropdown-item" href="{{ rel_url }}docs/java">Java API</a>
+            <a class="dropdown-item" href="{{ rel_url }}docs/c_glib">C GLib API</a>
+            <a class="dropdown-item" href="{{ rel_url }}docs/js">Javascript API</a>
           </div>
         </li>
-        <!-- <li><a href="{{ site.baseurl }}/blog">Blog</a></li> -->
+        <!-- <li><a href="{{ rel_url }}blog">Blog</a></li> -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#"
              id="navbarDropdownASF" role="button" data-toggle="dropdown"
@@ -78,7 +79,7 @@
           <img src="https://www.apache.org/events/current-event-234x60.png"/>
         </a>
         <a href="http://www.apache.org/">
-          <img src="{{ site.baseurl }}/img/asf_logo.svg" width="120px"/>
+          <img src="{{ rel_url }}img/asf_logo.svg" width="120px"/>
         </a>
       </div>
       </div><!-- /.navbar-collapse -->
