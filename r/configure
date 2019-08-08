@@ -58,31 +58,22 @@ else
     PKG_LIBS=${PKGCONFIG_LIBS}
   else
     if [[ "$OSTYPE" == "darwin"* ]]; then
-      if [ "$(command -v brew)" ]; then
-        if [ "$(brew ls --versions ${PKG_BREW_NAME})" == "" ]; then
-          echo "Installing ${PKG_BREW_NAME} via Homebrew"
-          brew install ${PKG_BREW_NAME}
-        else
-          # We already have it so no need to install
-          echo "Using Homebrew ${PKG_BREW_NAME}"
-        fi
-
+      if [ "$(command -v brew)" ] && [ "$(brew ls --versions ${PKG_BREW_NAME})" != "" ]; then
+        echo "Using Homebrew ${PKG_BREW_NAME}"
         BREWDIR=$(brew --prefix)
-        PKG_CFLAGS="-I$BREWDIR/opt/$PKG_BREW_NAME/include"
-        PKG_LIBS="-L$BREWDIR/opt/$PKG_BREW_NAME/lib $PKG_LIBS"
       else
-        echo "Installing ${PKG_BREW_NAME} via Autobrew"
+        echo "Downloading ${PKG_BREW_NAME}"
         curl -sfL "https://jeroen.github.io/autobrew/$PKG_BREW_NAME" > autobrew
         if [ $? -ne 0 ]; then
-          echo "Failed to download autobrew script for ${PKG_BREW_NAME}"
+          echo "Failed to download manifest for ${PKG_BREW_NAME}"
         fi
         source autobrew
         if [ $? -ne 0 ]; then
-          echo "Autobrew did not successfully install ${PKG_BREW_NAME}"
+          echo "Failed to retrieve binary for ${PKG_BREW_NAME}"
         fi
-        PKG_CFLAGS="-I$BREWDIR/opt/$PKG_BREW_NAME/include"
-        PKG_LIBS="-L$BREWDIR/opt/$PKG_BREW_NAME/lib $PKG_LIBS"
       fi
+      PKG_CFLAGS="-I$BREWDIR/opt/$PKG_BREW_NAME/include"
+      PKG_LIBS="-L$BREWDIR/opt/$PKG_BREW_NAME/lib $PKG_LIBS"
     fi
   fi
 fi
