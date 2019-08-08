@@ -27,12 +27,6 @@ Install the latest release of `arrow` from CRAN with
 install.packages("arrow")
 ```
 
-> Warning: the macOS binary packages on CRAN for 0.14.1 do not work as
-> described below. To install, you’ll first need to use Homebrew to get
-> the Arrow C++ library (`brew install apache-arrow`), and then from R
-> you can `install.packages("arrow", type = "source")`. We hope to have
-> this resolved in the next release.
-
 On macOS and Windows, installing a binary package from CRAN will handle
 Arrow’s C++ dependencies for you. On Linux, you’ll need to first install
 the C++ library. See the [Arrow project installation
@@ -67,7 +61,7 @@ set.seed(24)
 
 tab <- arrow::table(x = 1:10, y = rnorm(10))
 tab$schema
-#> arrow::Schema 
+#> arrow::Schema
 #> x: int32
 #> y: double
 tab
