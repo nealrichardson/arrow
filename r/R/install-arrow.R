@@ -52,8 +52,18 @@ install_arrow_msg <- function(has_arrow, version, os) {
       # Point to compilation instructions on readme
       msg <- c(SEE_DEV_GUIDE, THEN_REINSTALL)
     } else {
-      # Suggest arrow.apache.org/install, or compilation instructions
-      msg <- c(paste(SEE_ARROW_INSTALL, OR_SEE_DEV_GUIDE), THEN_REINSTALL)
+      # Release version. See if we can find installation instructions tailored
+      # to this distro and version
+      msg <- tryCatch(
+        install_arrow_linux(
+          tolower(system2("lsb_release", "-is", stdout = TRUE, stderr = TRUE)),
+          system2("lsb_release", "-cs", stdout = TRUE, stderr = TRUE)
+        ),
+        error = function (e) {
+          # Suggest arrow.apache.org/install, or compilation instructions
+          c(paste(SEE_ARROW_INSTALL, OR_SEE_DEV_GUIDE), THEN_REINSTALL)
+        }
+      )
     }
   } else {
     # We no longer allow builds without libarrow on macOS or Windows so this
@@ -105,4 +115,56 @@ REPORT_ISSUE <- paste(
   "If you have other trouble, or if you think this message could be improved,",
   "please report an issue here:",
   "<https://issues.apache.org/jira/projects/ARROW/issues>"
+)
+
+install_arrow_linux <- function(distro, version) {
+  if (distro == "ubuntu") {
+    instructions <- sprintf(UBUNTU_INSTALL, version)
+  } else if (distro == "debian") {
+    instructions <- sprintf(DEBIAN_INSTALL, distro, distro, version, distro, version)
+    if (version == "stretch") {
+      instructions <- paste(
+        sprintf(DEBIAN_BACKPORT, version),
+        instructions,
+        sep = "\n"
+      )
+    }
+  } else {
+    stop("We don't have helpful commands for you")
+  }
+  # TODO:
+  # * Wrap script with instructions and print it
+  # * If interactive, ask to run it? If so, write to tmpfile, system("sudo source %s")
+  # which will prompt for password and hopefully succeed. If error, well, you
+  # get the usual see-the-readme message
+  # * In script, pull out the install.packages step so it's not done sudo
+  # * detach and reload?
+  instructions
+}
+
+UBUNTU_INSTALL <- paste(
+  'curl https://dist.apache.org/repos/dist/dev/arrow/KEYS | apt-key add -',
+  'add-apt-repository "deb [arch=amd64] http://dl.bintray.com/apache/arrow/ubuntu %s main"',
+  'apt-get install libarrow-dev libparquet-dev',
+  'R -e \'install.packages("arrow", repos = "https://cloud.r-project.org")\'',
+  sep = "\n"
+)
+
+DEBIAN_INSTALL <- paste(
+  'curl --output /usr/share/keyrings/apache-arrow-keyring.gpg https://dl.bintray.com/apache/arrow/%s/apache-arrow-keyring.gpg',
+  'tee /etc/apt/sources.list.d/apache-arrow.list <<APT_LINE',
+  'deb [arch=amd64 signed-by=/usr/share/keyrings/apache-arrow-keyring.gpg] https://dl.bintray.com/apache/arrow/%s/ %s main',
+  'deb-src [signed-by=/usr/share/keyrings/apache-arrow-keyring.gpg] https://dl.bintray.com/apache/arrow/%s/ %s main',
+  'APT_LINE',
+  'apt update',
+  'apt install -y -V libarrow-dev libparquet-dev',
+  'R -e \'install.packages("arrow", repos = "https://cloud.r-project.org")\'',
+  sep = "\n"
+)
+
+DEBIAN_BACKPORT <- paste(
+  'tee /etc/apt/sources.list.d/backports.list <<APT_LINE',
+  'deb http://deb.debian.org/debian %s-backports main',
+  'APT_LINE',
+  sep = "\n"
 )
