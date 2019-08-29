@@ -35,24 +35,64 @@ r_only({
     )
   })
 
-  test_that("Solaris and Linux dev version get pointed to C++ guide", {
-    expect_match(
-      install_arrow_msg(FALSE, "0.13.0", os="sunos"),
-      "See the Arrow C++ developer guide",
-      fixed = TRUE
-    )
-    expect_match(
-      install_arrow_msg(FALSE, "0.13.0.9000", os="linux"),
-      "See the Arrow C++ developer guide",
-      fixed = TRUE
-    )
+  with_mock(`arrow:::install_arrow_linux` = stop, {
+    test_that("Solaris and Linux dev version get pointed to C++ guide", {
+      expect_match(
+        install_arrow_msg(FALSE, "0.13.0", os="sunos"),
+        "See the Arrow C++ developer guide",
+        fixed = TRUE
+      )
+      expect_match(
+        install_arrow_msg(FALSE, "0.13.0.9000", os="linux"),
+        "See the Arrow C++ developer guide",
+        fixed = TRUE
+      )
+    })
+
+    test_that("Linux on release version gets pointed to /install/ if installation unsuccessful", {
+      expect_match(
+        install_arrow_msg(FALSE, "0.13.0", os="linux"),
+        "dependency. Or, see the Arrow C++ developer guide",
+        fixed = TRUE
+      )
+    })
   })
 
-  test_that("Linux on release version gets pointed to PPA first, then C++", {
-    expect_match(
-      install_arrow_msg(FALSE, "0.13.0", os="linux"),
-      "dependency. Or, see the Arrow C++ developer guide",
-      fixed = TRUE
-    )
+  with_mock(`arrow:::install_arrow_linux` = function (...) "DO THIS", {
+    test_that("We can get customized instructions from install_arrow_linux", {
+      expect_match(
+        install_arrow_msg(FALSE, "0.13.0", os="linux"),
+        "^DO THIS\n\nRefer to the R package README"
+      )
+    })
+  })
+
+  with_mock(`arrow:::is_interactive` = function () FALSE, {
+    test_that("install_arrow_linux instructions by OS", {
+      expect_match(
+        install_arrow_linux("centos", "7.0"),
+        "REPO\nyum install -y epel-release"
+      )
+      expect_match(
+        install_arrow_linux("ubuntu", "adjective"),
+        "arrow/ubuntu adjective main"
+      )
+      expect_match(
+        install_arrow_linux("debian", "buster"),
+        "apache/arrow/debian/ buster main"
+      )
+      expect_match(
+        install_arrow_linux("debian", "stretch"),
+        "tee /etc/apt/sources\\.list\\.d/backports\\.list.*apache/arrow/debian/ stretch main"
+      )
+      expect_error(
+        install_arrow_linux("windows", "vista"),
+        "We don't have helpful commands for you"
+      )
+      expect_error(
+        install_arrow_linux(255L, 1L),
+        "Could not identify distro/version"
+      )
+    })
   })
 })

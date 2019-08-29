@@ -35,11 +35,6 @@ install_arrow <- function() {
 install_arrow_msg <- function(has_arrow, version, os) {
   # TODO: check if there is a newer version on CRAN?
 
-  # install_arrow() sends "version" as a "package_version" class, but for
-  # convenience, this also accepts a string like "0.13.0". Calling
-  # `package_version` is idempotent so do it again, and then `unclass` to get
-  # the integers. Then see how many there are.
-  dev_version <- length(unclass(package_version(version))[[1]]) > 3
   # Based on these parameters, assemble a string with installation advice
   if (has_arrow) {
     # Respond that you already have it
@@ -48,6 +43,11 @@ install_arrow_msg <- function(has_arrow, version, os) {
     # Good luck with that.
     msg <- c(SEE_DEV_GUIDE, THEN_REINSTALL)
   } else if (os == "linux") {
+    # install_arrow() sends "version" as a "package_version" class, but for
+    # convenience, this also accepts a string like "0.13.0". Calling
+    # `package_version` is idempotent so do it again, and then `unclass` to get
+    # the integers. Then see how many there are.
+    dev_version <- length(unclass(package_version(version))[[1]]) > 3
     if (dev_version) {
       # Point to compilation instructions on readme
       msg <- c(SEE_DEV_GUIDE, THEN_REINSTALL)
@@ -68,11 +68,15 @@ install_arrow_msg <- function(has_arrow, version, os) {
   } else {
     # We no longer allow builds without libarrow on macOS or Windows so this
     # case shouldn't happen
-    msg <- ""
+    msg <- NULL
   }
-  # Common postscript
-  msg <- c(msg, SEE_README, REPORT_ISSUE)
-  paste(msg, collapse="\n\n")
+  if (!is.null(msg)) {
+    # NULL message means arrow has been installed successfully
+    # Otherwise add common postscript
+    msg <- c(msg, SEE_README, REPORT_ISSUE)
+    msg <- paste(msg, collapse="\n\n")
+  }
+  msg
 }
 
 ALREADY_HAVE <- paste(
@@ -117,36 +121,71 @@ REPORT_ISSUE <- paste(
   "<https://issues.apache.org/jira/projects/ARROW/issues>"
 )
 
+# See https://arrow.apache.org/install/
+#' @importFrom utils install.packages
 install_arrow_linux <- function(distro, version) {
-  if (distro == "ubuntu") {
-    instructions <- sprintf(UBUNTU_INSTALL, version)
+  # If any of this errors (including calling lsb_release to get distro/version)
+  # the calling function will fall back to referring the user to the readme/docs
+
+  # In case system2 returned an error code instead of raising an R error:
+  if (!is.character(distro) || !is.character(version)) {
+    stop("Could not identify distro/version", call.=FALSE)
+  }
+  if (distro == "centos") {
+    commands <- CENTOS_INSTALL
+  } else if (distro == "ubuntu") {
+    commands <- sprintf(UBUNTU_INSTALL, version)
   } else if (distro == "debian") {
-    instructions <- sprintf(DEBIAN_INSTALL, distro, distro, version, distro, version)
+    commands <- sprintf(DEBIAN_INSTALL, distro, distro, version, distro, version)
     if (version == "stretch") {
-      instructions <- paste(
+      commands <- paste(
         sprintf(DEBIAN_BACKPORT, version),
-        instructions,
+        commands,
         sep = "\n"
       )
     }
   } else {
-    stop("We don't have helpful commands for you")
+    stop("We don't have helpful commands for you", call. = FALSE)
   }
-  # TODO:
-  # * Wrap script with instructions and print it
-  # * If interactive, ask to run it? If so, write to tmpfile, system("sudo source %s")
-  # which will prompt for password and hopefully succeed. If error, well, you
-  # get the usual see-the-readme message
-  # * In script, pull out the install.packages step so it's not done sudo
-  # * detach and reload?
+
+  instructions <- paste(
+    "Try running this at the command line (as root):\n",
+    commands,
+    'R -e \'install.packages("arrow", repos = "https://cloud.r-project.org")\'',
+    sep = "\n"
+  )
+  if (is_interactive()) {
+    message(instructions)
+    do_it <- readline("Would you like to run this now? (Y/n) ")
+    if (do_it %in% c("", "Y", "y")) {
+      script_file <- tempfile()
+      cat(commands, file = script_file)
+      status <- system(paste("sudo", "source", shQuote(script_file)))
+      if (status > 0) {
+        stop("Failed to install Arrow C++ libraries", call. = FALSE)
+      }
+      install.packages("arrow")
+      # TODO (npr): detach and reload
+      # ? Add devtools to Suggests and devtools::reload?
+
+      # If successful (i.e. no errors), no further message needed
+      instructions <- NULL
+    } else {
+      # We already printed the instructions.
+      # Return an empty string so that the "See also README" gets printed.
+      instructions <- ""
+    }
+  }
   instructions
 }
+
+# Copy here for mocking purposes
+is_interactive <- function () interactive()
 
 UBUNTU_INSTALL <- paste(
   'curl https://dist.apache.org/repos/dist/dev/arrow/KEYS | apt-key add -',
   'add-apt-repository "deb [arch=amd64] http://dl.bintray.com/apache/arrow/ubuntu %s main"',
   'apt-get install libarrow-dev libparquet-dev',
-  'R -e \'install.packages("arrow", repos = "https://cloud.r-project.org")\'',
   sep = "\n"
 )
 
@@ -158,7 +197,6 @@ DEBIAN_INSTALL <- paste(
   'APT_LINE',
   'apt update',
   'apt install -y -V libarrow-dev libparquet-dev',
-  'R -e \'install.packages("arrow", repos = "https://cloud.r-project.org")\'',
   sep = "\n"
 )
 
@@ -166,5 +204,19 @@ DEBIAN_BACKPORT <- paste(
   'tee /etc/apt/sources.list.d/backports.list <<APT_LINE',
   'deb http://deb.debian.org/debian %s-backports main',
   'APT_LINE',
+  sep = "\n"
+)
+
+CENTOS_INSTALL <- paste(
+  'tee /etc/yum.repos.d/Apache-Arrow.repo <<REPO',
+  '[apache-arrow]',
+  'name=Apache Arrow',
+  'baseurl=https://dl.bintray.com/apache/arrow/centos/\\$releasever/\\$basearch/',
+  'gpgcheck=1',
+  'enabled=1',
+  'gpgkey=https://dl.bintray.com/apache/arrow/centos/RPM-GPG-KEY-apache-arrow',
+  'REPO',
+  'yum install -y epel-release',
+  'yum install -y --enablerepo=epel arrow-devel parquet-devel',
   sep = "\n"
 )
