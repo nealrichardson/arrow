@@ -65,6 +65,12 @@ Schema$create <- function(...) shared_ptr(Schema, schema_(.fields(list2(...))))
 #' @export
 `==.Schema` <- function(lhs, rhs) lhs$Equals(rhs)
 
+#' @export
+all.equal.Schema <- function (target, current, ...) {
+  # TODO: this could provide more info on what is different
+  target == current
+}
+
 #' @param ... named list of [data types][data-type]
 #' @export
 #' @rdname Schema

@@ -86,7 +86,7 @@ read_delim_arrow <- function(file,
                              escape_double = TRUE,
                              escape_backslash = FALSE,
                              col_names = TRUE,
-                             # col_types = TRUE,
+                             col_types = TRUE,
                              col_select = NULL,
                              na = c("", "NA"),
                              quoted_na = TRUE,
@@ -111,8 +111,7 @@ read_delim_arrow <- function(file,
     read_options <- readr_to_csv_read_options(skip, col_names)
   }
   if (is.null(convert_options)) {
-    # TODO: col_types (needs wiring in csv_convert_options)
-    convert_options <- readr_to_csv_convert_options(na, quoted_na)
+    convert_options <- readr_to_csv_convert_options(col_types, na, quoted_na)
   }
 
   reader <- csv_table_reader(
@@ -138,7 +137,7 @@ read_csv_arrow <- function(file,
                            escape_double = TRUE,
                            escape_backslash = FALSE,
                            col_names = TRUE,
-                           # col_types = TRUE,
+                           col_types = TRUE,
                            col_select = NULL,
                            na = c("", "NA"),
                            quoted_na = TRUE,
@@ -162,7 +161,7 @@ read_tsv_arrow <- function(file,
                            escape_double = TRUE,
                            escape_backslash = FALSE,
                            col_names = TRUE,
-                           # col_types = TRUE,
+                           col_types = TRUE,
                            col_select = NULL,
                            na = c("", "NA"),
                            quoted_na = TRUE,
@@ -321,22 +320,19 @@ readr_to_csv_parse_options <- function(delim = ",",
 
 CsvConvertOptions <- R6Class("CsvConvertOptions", inherit = Object)
 CsvConvertOptions$create <- function(check_utf8 = TRUE,
+                                     column_types = NULL,
                                      null_values = c("", "NA"),
                                      strings_can_be_null = FALSE) {
-  # TODO: there are more conversion options available:
-  # // Optional per-column types (disabling type inference on those columns)
-  # std::unordered_map<std::string, std::shared_ptr<DataType>> column_types;
-  # // Recognized spellings for boolean values
-  # std::vector<std::string> true_values;
-  # std::vector<std::string> false_values;
-
-  shared_ptr(CsvConvertOptions, csv___ConvertOptions__initialize(
-    list(
-      check_utf8 = check_utf8,
-      null_values = null_values,
-      strings_can_be_null = strings_can_be_null
-    )
-  ))
+  opts <- list(
+    check_utf8 = check_utf8,
+    null_values = null_values,
+    strings_can_be_null = strings_can_be_null
+  )
+  if (!is.null(column_types)) {
+    # Only include it if specified, otherwise omit and take the default
+    opts$column_types <- column_types
+  }
+  shared_ptr(CsvConvertOptions, csv___ConvertOptions__initialize(opts))
 }
 
 #' Conversion options for the CSV reader
@@ -351,6 +347,14 @@ CsvConvertOptions$create <- function(check_utf8 = TRUE,
 #' @export
 csv_convert_options <- CsvConvertOptions$create
 
-readr_to_csv_convert_options <- function(na, quoted_na) {
-    csv_convert_options(null_values = na, strings_can_be_null = quoted_na)
+readr_to_csv_convert_options <- function(col_types, na, quoted_na) {
+  if (isTRUE(col_types)) {
+    # Translate default to default
+    col_types <- NULL
+  } # else, some other magic string parsing
+  csv_convert_options(
+    column_types = col_types,
+    null_values = na,
+    strings_can_be_null = quoted_na
+  )
 }

@@ -32,3 +32,24 @@ r_only <- function(code) {
   on.exit(options(old))
   code
 }
+
+# expect_equal <- function (object, expected, ...) {
+#     act <- quasi_label(enquo(object), arg = "object")
+#     exp <- quasi_label(enquo(expected), arg = "expected")
+#     comp <- compare(act$val, exp$val, ...)
+#     expect(object == expected, sprintf("%s not equal to %s.\n%s", act$lab,
+#         exp$lab, comp$message), info = info)
+#     invisible(act$val)
+# }
+#   if (inherits(x, "arrow::Schema")) {
+#     #
+#     expect_true(x == y)
+#   } else {
+#     testthat::expect_equal(x, y, ...)
+#   }
+# }
+
+`all.equal.arrow::Schema` <- function (target, current, ...) {
+  print("hi")
+  target == current
+}

@@ -108,6 +108,28 @@ test_that("read_csv_arrow parsing options: col_names", {
   )
 })
 
+test_that("read_csv_arrow parsing options: col_types", {
+  tf <- tempfile()
+  on.exit(unlink(tf))
+
+  df <- data.frame(
+    a = c(1.2, NA, NA, 3.4),
+    b = c(NA, "B", "C", NA),
+    stringsAsFactors = FALSE
+  )
+  write.csv(df, tf, row.names=FALSE)
+
+  tab1 <- read_csv_arrow(tf, as_tibble = FALSE)
+  expect_equal(tab1$schema, schema(a = float64(), b = string()))
+  tab2 <- read_csv_arrow(tf, col_types = list(a = float32(), b = string()), as_tibble = FALSE)
+  expect_equal(tab2$schema, schema(a = float32(), b = string()))
+  expect_equal(schema(a = float32(), b = string()), schema(a = float64(), b = string()))
+  expect_true(schema(a = utf8(), c = int32()) == schema(a = float64(), float64()))
+  expect_true(schema(a = float64(), float64()) == schema(a = float64(), float64()))
+})
+
+
+
 test_that("read_csv_arrow parsing options: skip", {
   tf <- tempfile()
   on.exit(unlink(tf))

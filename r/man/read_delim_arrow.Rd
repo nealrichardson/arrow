@@ -8,21 +8,22 @@
 \usage{
 read_delim_arrow(file, delim = ",", quote = "\\"",
   escape_double = TRUE, escape_backslash = FALSE, col_names = TRUE,
+  col_types = TRUE, col_select = NULL, na = c("", "NA"),
+  quoted_na = TRUE, skip_empty_rows = TRUE, skip = 0L,
+  parse_options = NULL, convert_options = NULL, read_options = NULL,
+  as_tibble = TRUE)
+
+read_csv_arrow(file, quote = "\\"", escape_double = TRUE,
+  escape_backslash = FALSE, col_names = TRUE, col_types = TRUE,
   col_select = NULL, na = c("", "NA"), quoted_na = TRUE,
   skip_empty_rows = TRUE, skip = 0L, parse_options = NULL,
   convert_options = NULL, read_options = NULL, as_tibble = TRUE)
 
-read_csv_arrow(file, quote = "\\"", escape_double = TRUE,
-  escape_backslash = FALSE, col_names = TRUE, col_select = NULL,
-  na = c("", "NA"), quoted_na = TRUE, skip_empty_rows = TRUE,
-  skip = 0L, parse_options = NULL, convert_options = NULL,
-  read_options = NULL, as_tibble = TRUE)
-
 read_tsv_arrow(file, quote = "\\"", escape_double = TRUE,
-  escape_backslash = FALSE, col_names = TRUE, col_select = NULL,
-  na = c("", "NA"), quoted_na = TRUE, skip_empty_rows = TRUE,
-  skip = 0L, parse_options = NULL, convert_options = NULL,
-  read_options = NULL, as_tibble = TRUE)
+  escape_backslash = FALSE, col_names = TRUE, col_types = TRUE,
+  col_select = NULL, na = c("", "NA"), quoted_na = TRUE,
+  skip_empty_rows = TRUE, skip = 0L, parse_options = NULL,
+  convert_options = NULL, read_options = NULL, as_tibble = TRUE)
 }
 \arguments{
 \item{file}{A character file name, raw vector, or an Arrow input stream}
