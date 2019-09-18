@@ -18,6 +18,7 @@
 context("arrow::io::Compressed.*Stream")
 
 test_that("can write Buffer to CompressedOutputStream and read back in CompressedInputStream", {
+  skip("Another")
   if (.Platform$OS.type == "windows") skip("Unsupported")
 
   buf <- buffer(as.raw(sample(0:255, size = 1024, replace = TRUE)))
@@ -50,4 +51,3 @@ test_that("can write Buffer to CompressedOutputStream and read back in Compresse
   unlink(tf1)
   unlink(tf2)
 })
-

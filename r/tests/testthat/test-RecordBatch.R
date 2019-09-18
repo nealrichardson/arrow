@@ -109,6 +109,7 @@ test_that("RecordBatch with 0 rows are supported", {
 })
 
 test_that("RecordBatch cast (ARROW-3741)", {
+  skip("Skip all expect_error")
   batch <- record_batch(x = 1:10, y = 1:10)
 
   expect_error(batch$cast(schema(x = int32())))
@@ -131,11 +132,13 @@ test_that("record_batch() handles schema= argument", {
   expect_equal(s, batch$schema)
 
   s <- schema(x = int32(), y = utf8())
+  skip("Skip all expect_error")
   expect_error(record_batch(x = 1:10, y = 1:10, schema = s))
 })
 
 test_that("record_batch(schema=) does some basic consistency checking of the schema", {
   s <- schema(x = int32())
+  skip("Skip all expect_error")
   expect_error(record_batch(x = 1:10, y = 1:10, schema = s))
   expect_error(record_batch(z = 1:10, schema = s))
 })
@@ -182,6 +185,7 @@ test_that("record_batch() handles data frame columns with schema spec", {
   expect_equivalent(out, tibble::tibble(a = 1:10, b = tib))
 
   schema <- schema(a = int32(), b = struct(x = int16(), y = utf8()))
+  skip("Skip all expect_error")
   expect_error(record_batch(a = 1:10, b = tib, schema = schema))
 })
 
@@ -215,9 +219,9 @@ test_that("record_batch() auto splices (ARROW-5718)", {
 })
 
 test_that("record_batch() only auto splice data frames", {
+  skip("Skip all expect_error")
   expect_error(
     record_batch(1:10),
     regexp = "only data frames are allowed as unnamed arguments to be auto spliced"
   )
 })
-

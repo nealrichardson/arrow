@@ -64,6 +64,7 @@ test_that("read_table handles various input streams (ARROW-3450, ARROW-3505)", {
 })
 
 test_that("Table cast (ARROW-3741)", {
+  skip("Skip all expect_error")
   tab <- table(x = 1:10, y = 1:10)
 
   expect_error(tab$cast(schema(x = int32())))
@@ -136,4 +137,3 @@ test_that("table() auto splices (ARROW-5718)", {
   expect_equal(tab3$schema, s)
   expect_equivalent(as.data.frame(tab3), df)
 })
-
