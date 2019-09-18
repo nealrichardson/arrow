@@ -403,6 +403,7 @@ test_that("array() converts raw vectors to uint8 arrays (ARROW-3794)", {
 })
 
 test_that("Array<int8>$as_vector() converts to integer (ARROW-3794)", {
+  skip("terminate called after throwing an instance of 'std::length_error'")
   a <- array((-128):127)$cast(int8())
   expect_equal(a$type, int8())
   expect_equal(a$as_vector(), (-128):127)
@@ -413,7 +414,6 @@ test_that("Array<int8>$as_vector() converts to integer (ARROW-3794)", {
 })
 
 test_that("array() recognise arrow::Array (ARROW-3815)", {
-  skip("terminate called after throwing an instance of 'std::length_error'")
   a <- array(1:10)
   expect_equal(a, array(a))
 })
