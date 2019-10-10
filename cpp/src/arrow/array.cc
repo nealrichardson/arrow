@@ -1322,9 +1322,13 @@ struct ValidateVisitor {
     if (array.length() && !value_offsets) {
       return Status::Invalid("value_offsets_ was null");
     }
-    if (value_offsets->size() / static_cast<int>(sizeof(offset_type)) < array.length()) {
-      return Status::Invalid("offset buffer size (bytes): ", value_offsets->size(),
-                             " isn't large enough for length: ", array.length());
+    if (array.length() > 0) {
+      // For length 0, an empty offsets array seems accepted as a special case (ARROW-544)
+      if (value_offsets->size() / static_cast<int>(sizeof(offset_type)) <
+          array.length() + 1) {
+        return Status::Invalid("offset buffer size (bytes): ", value_offsets->size(),
+                               " isn't large enough for length: ", array.length());
+      }
     }
 
     auto prev_offset = array.value_offset(0);

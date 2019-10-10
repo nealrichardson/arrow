@@ -996,6 +996,22 @@ cdef class Array(_PandasConvertible):
         _append_array_buffers(self.sp_array.get().data().get(), res)
         return res
 
+    def export_to_c(self, uintptr_t out_ptr):
+        """
+        XXX
+        """
+        check_status(ExportArray(deref(self.sp_array),
+                                 <ArrowArray*> out_ptr))
+
+    @staticmethod
+    def import_from_c(uintptr_t in_ptr):
+        """
+        XXX
+        """
+        cdef shared_ptr[CArray] result
+        check_status(ImportArray(<ArrowArray*> in_ptr, &result))
+        return pyarrow_wrap_array(result)
+
 
 cdef wrap_array_output(PyObject* output):
     cdef object obj = PyObject_to_object(output)
