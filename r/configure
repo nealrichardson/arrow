@@ -33,6 +33,8 @@ PKG_BREW_NAME="apache-arrow"
 PKG_TEST_HEADER="<arrow/api.h>"
 PKG_LIBS="-larrow -lparquet"
 
+VERSION=$(grep ^Version DESCRIPTION | sed s/Version:\ //)
+
 # generate code
 if [ "$ARROW_R_DEV" == "TRUE" ]; then
   echo "*** Generating code with data-raw/codegen.R"
@@ -48,6 +50,14 @@ if [ "$LOCAL_AUTOBREW" == "TRUE" ]; then
   cp tools/autobrew .
   cp tools/apache-arrow.rb .
   FORCE_AUTOBREW="TRUE"
+fi
+
+if [ "$LIBARROW_LOCAL" ]; then
+  # Use it. Untar it and set LIB_DIR accordingly
+  LIB_DIR=linux/arrow-$VERSION
+  INCLUDE_DIR=$LIB_DIR/include
+  mkdir -p $LIB_DIR
+  tar -zxfv $LIBARROW_LOCAL -C $LIB_DIR
 fi
 
 # Note that cflags may be empty in case of success
@@ -89,6 +99,8 @@ else
       fi
       PKG_CFLAGS="-I$BREWDIR/opt/$PKG_BREW_NAME/include"
       PKG_LIBS="-L$BREWDIR/opt/$PKG_BREW_NAME/lib $PKG_LIBS"
+    else
+      # TODO: Try to find/download a C++ Arrow binary (cf tools/winlibs.R)
     fi
   fi
 fi
