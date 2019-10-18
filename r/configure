@@ -101,6 +101,7 @@ else
       PKG_LIBS="-L$BREWDIR/opt/$PKG_BREW_NAME/lib $PKG_LIBS"
     else
       # TODO: Try to find/download a C++ Arrow binary (cf tools/winlibs.R)
+      echo "No Arrow C++"
     fi
   fi
 fi
