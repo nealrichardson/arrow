@@ -57,7 +57,7 @@ if [ "$LIBARROW_LOCAL" ]; then
   LIB_DIR=linux/arrow-$VERSION
   INCLUDE_DIR=$LIB_DIR/include
   mkdir -p $LIB_DIR
-  tar -zxfv $LIBARROW_LOCAL -C $LIB_DIR
+  tar -zxvf $LIBARROW_LOCAL -C $LIB_DIR
 fi
 
 # Note that cflags may be empty in case of success
