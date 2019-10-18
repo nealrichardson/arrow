@@ -308,8 +308,8 @@ matrix:
     - $TRAVIS_BUILD_DIR/ci/travis_before_script_cpp.sh --only-library
     # Test: tar up the C++ build so we can find and extract it in r/configure
     - export LIBARROW_LOCAL=$TRAVIS_BUILD_DIR/libarrow.tar.gz
-    - cd $ARROW_CPP_INSTALL && tar -zcvf $LIBARROW_LOCAL .
-    - rm -rf $ARROW_CPP_INSTALL
+    - cd $TRAVIS_BUILD_DIR/cpp-install && tar -zcvf $LIBARROW_LOCAL .
+    - rm -rf $TRAVIS_BUILD_DIR/cpp-install
     - export CXX11FLAGS=-Wall
     # Add this env var so we can assert in the tests that the library is installed correctly
     - export TEST_R_WITH_ARROW=TRUE
