@@ -54,10 +54,11 @@ fi
 
 if [ "$LIBARROW_LOCAL" ]; then
   # Use it. Untar it and set LIB_DIR accordingly
-  LIB_DIR=linux/arrow-$VERSION
-  INCLUDE_DIR=$LIB_DIR/include
+  LIBARROW_DIR=linux/arrow-$VERSION
   mkdir -p $LIB_DIR
-  tar -zxvf $LIBARROW_LOCAL -C $LIB_DIR
+  tar -zxvf $LIBARROW_LOCAL -C $LIBARROW_DIR
+  LIB_DIR=$LIBARROW_DIR/lib
+  INCLUDE_DIR=$LIBARROW_DIR/include
 fi
 
 # Note that cflags may be empty in case of success
