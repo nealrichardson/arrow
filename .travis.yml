@@ -300,12 +300,14 @@ matrix:
     - bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
   - name: R (with and without libarrow)
     language: r
+    r: devel
     cache: packages
     dist: xenial
     env:
     - ARROW_TRAVIS_PARQUET=1
     - ARROW_TRAVIS_USE_SYSTEM=1
     - ARROW_TRAVIS_MIMALLOC=1
+    - _R_CHECK_BASHISMS_=true
     before_install:
     # Have to copy-paste this here because of how R's build steps work
     - eval `python $TRAVIS_BUILD_DIR/ci/detect-changes.py`
