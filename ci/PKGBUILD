@@ -85,12 +85,21 @@ build() {
     -DARROW_JEMALLOC=OFF \
     -DARROW_WITH_ZLIB=ON \
     -DARROW_WITH_SNAPPY=ON \
+    -DARROW_WITH_URIPARSER=ON \
     -DARROW_USE_GLOG=OFF \
     -DARROW_BUILD_UTILITIES=OFF \
     -Ddouble-conversion_ROOT="${MINGW_PREFIX}" \
     -DThrift_ROOT="${MINGW_PREFIX}"
 
   make
+  echo "MINGW_PREFIX"
+  echo ${MINGW_PREFIX}
+  ls ${MINGW_PREFIX}
+  ls ${MINGW_PREFIX}/lib
+  echo "cwd"
+  ls
+  ls uriparser_ep-install
+  ls uriparser_ep-install/lib
   popd
 }
 
