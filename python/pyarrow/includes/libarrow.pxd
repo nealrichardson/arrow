@@ -1135,6 +1135,9 @@ cdef extern from "arrow/filesystem/api.h" namespace "arrow::fs" nogil:
         CSubTreeFileSystem(const c_string& base_path,
                            shared_ptr[CFileSystem] base_fs)
 
+    cdef cppclass CMockFileSystem "arrow::fs::internal::MockFileSystem"(CFileSystem):
+        CMockFileSystem(CTimePoint current_time)
+
 
 cdef extern from "arrow/ipc/api.h" namespace "arrow::ipc" nogil:
     enum MessageType" arrow::ipc::Message::Type":
@@ -1610,13 +1613,13 @@ cdef extern from "arrow/python/api.h" namespace "arrow::py" nogil:
 
 
 cdef extern from "arrow/python/api.h" namespace "arrow::py::internal" nogil:
-
     cdef cppclass CTimePoint "arrow::py::internal::TimePoint":
         pass
 
-    cdef CStatus PyDateTime_from_int(int64_t val, const TimeUnit unit,
-                                     PyObject** out)
-    cdef CStatus PyDateTime_from_TimePoint(CTimePoint val, PyObject** out)
+    CStatus PyDateTime_from_int(int64_t val, const TimeUnit unit,
+                                PyObject** out)
+    CStatus PyDateTime_from_TimePoint(CTimePoint val, PyObject** out)
+    CTimePoint PyDateTime_to_TimePoint(PyDateTime_DateTime* pydatetime)
 
 
 cdef extern from 'arrow/python/init.h':
