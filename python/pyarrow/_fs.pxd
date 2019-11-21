@@ -56,6 +56,8 @@ cdef class FileSystem:
     @staticmethod
     cdef wrap(shared_ptr[CFileSystem]& sp)
 
+    cdef inline shared_ptr[CFileSystem] unwrap(self)
+
 
 cdef class LocalFileSystem(FileSystem):
     cdef:
