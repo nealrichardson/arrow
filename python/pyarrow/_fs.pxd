@@ -38,7 +38,7 @@ cdef class FileStats:
         CFileStats stats
 
     @staticmethod
-    cdef FileStats wrap(CFileStats stats)
+    cdef wrap(CFileStats stats)
 
 
 cdef class Selector:
@@ -52,6 +52,9 @@ cdef class FileSystem:
         CFileSystem* fs
 
     cdef init(self, const shared_ptr[CFileSystem]& wrapped)
+
+    @staticmethod
+    cdef wrap(shared_ptr[CFileSystem]& sp)
 
 
 cdef class LocalFileSystem(FileSystem):
