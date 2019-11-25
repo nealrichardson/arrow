@@ -299,7 +299,7 @@ TEST_F(TestEndToEnd, EndToEndSingleSource) {
   DataSourceDiscoveryPtr discovery;
 
   // The user must specify which FileFormat is used to create FileFragments.
-  // This option is specific to FileSystemBasedDataSource (and the builder).
+  // This option is specific to FileSystemDataSource (and the builder).
   //
   // Note the JSONRecordBatchFileFormat requires a schema before creating the Discovery
   // class which is used to discover the schema. This is a chicken-and-egg problem
