@@ -169,10 +169,10 @@ class ARROW_DS_EXPORT FileDataFragment : public DataFragment {
   FileFormatPtr format_;
 };
 
-/// \brief A DataSource of FileBasedDataFragments.
+/// \brief A DataSource of FileDataFragments.
 class ARROW_DS_EXPORT FileSystemDataSource : public DataSource {
  public:
-  /// \brief Create a FileSystemBasedDataSource with optional partitions.
+  /// \brief Create a FileSystemDataSource with optional partitions.
   ///
   /// \param[in] filesystem the filesystem which files are from.
   /// \param[in] stats a list of files/directories to consume.

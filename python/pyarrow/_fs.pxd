@@ -40,6 +40,8 @@ cdef class FileStats:
     @staticmethod
     cdef wrap(CFileStats stats)
 
+    cdef inline CFileStats unwrap(self)
+
 
 cdef class Selector:
     cdef:
