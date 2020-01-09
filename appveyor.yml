@@ -91,7 +91,7 @@ environment:
       USE_CLCACHE: false
       TEST_R_WITH_ARROW: "TRUE"
       RWINLIB_LOCAL: '%APPVEYOR_BUILD_FOLDER%\libarrow.zip'
-      EXTRA_CMAKE_FLAGS: '-DCMAKE_CXX_FLAGS="-Werror $CXXFLAGS"'
+      EXTRA_CMAKE_FLAGS: '-DCMAKE_CXX_FLAGS="-Werror"'
       ARROW_R_CXXFLAGS: '-Werror'
       _R_CHECK_TESTS_NLINES_: 0
       WARNINGS_ARE_ERRORS: 1
