@@ -95,6 +95,7 @@ build() {
     -DARROW_WITH_ZSTD=ON \
     -DARROW_USE_GLOG=OFF \
     -DARROW_BUILD_UTILITIES=OFF \
+    ${EXTRA_CMAKE_FLAGS} \
     -DThrift_ROOT="${MINGW_PREFIX}"
 
   make
