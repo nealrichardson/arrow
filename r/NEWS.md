@@ -17,6 +17,12 @@
   under the License.
 -->
 
+# arrow 0.16.0.2
+
+
+* `write_feather`, `write_arrow` and `write_parquet` now return their input
+similar to `write_*` functions from `readr` (#6387, @boshek)
+
 # arrow 0.16.0
 
 ## Multi-file datasets
