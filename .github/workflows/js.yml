@@ -21,11 +21,13 @@ on:
   push:
     paths:
       - '.github/workflows/js.yml'
+      - 'docker-compose.yml'
       - 'ci/**'
       - 'js/**'
   pull_request:
     paths:
       - '.github/workflows/js.yml'
+      - 'docker-compose.yml'
       - 'ci/**'
       - 'js/**'
 

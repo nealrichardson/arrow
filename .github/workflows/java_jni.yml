@@ -21,12 +21,14 @@ on:
   push:
     paths:
       - '.github/workflows/java_jni.yml'
+      - 'docker-compose.yml'
       - 'ci/**'
       - 'cpp/**'
       - 'java/**'
   pull_request:
     paths:
       - '.github/workflows/java_jni.yml'
+      - 'docker-compose.yml'
       - 'ci/**'
       - 'cpp/**'
       - 'java/**'

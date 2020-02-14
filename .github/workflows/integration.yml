@@ -21,6 +21,7 @@ on:
   push:
     paths:
       - '.github/workflows/integration.yml'
+      - 'docker-compose.yml'
       - 'ci/**'
       - 'dev/archery/**'
       - 'go/**'
@@ -32,6 +33,7 @@ on:
   pull_request:
     paths:
       - '.github/workflows/integration.yml'
+      - 'docker-compose.yml'
       - 'ci/**'
       - 'dev/archery/**'
       - 'go/**'

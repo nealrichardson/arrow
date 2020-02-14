@@ -21,9 +21,11 @@ on:
   push:
     paths:
       - '.github/workflows/python_cron.yml'
+      - 'docker-compose.yml'
   pull_request:
     paths:
       - '.github/workflows/python_cron.yml'
+      - 'docker-compose.yml'
   schedule:
     - cron: |
         0 */12 * * *

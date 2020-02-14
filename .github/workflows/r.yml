@@ -21,12 +21,14 @@ on:
   push:
     paths:
       - '.github/workflows/r.yml'
+      - 'docker-compose.yml'
       - 'ci/**'
       - 'cpp/**'
       - 'r/**'
   pull_request:
     paths:
       - '.github/workflows/r.yml'
+      - 'docker-compose.yml'
       - 'ci/**'
       - 'cpp/**'
       - 'r/**'

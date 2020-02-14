@@ -21,11 +21,13 @@ on:
   push:
     paths:
       - '.github/workflows/rust.yml'
+      - 'docker-compose.yml'
       - 'ci/**'
       - 'rust/**'
   pull_request:
     paths:
       - '.github/workflows/rust.yml'
+      - 'docker-compose.yml'
       - 'ci/**'
       - 'rust/**'
 

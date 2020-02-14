@@ -21,6 +21,7 @@ on:
   push:
     paths:
       - '.github/workflows/ruby.yml'
+      - 'docker-compose.yml'
       - 'ci/**'
       - 'cpp/**'
       - 'c_glib/**'
@@ -28,6 +29,7 @@ on:
   pull_request:
     paths:
       - '.github/workflows/ruby.yml'
+      - 'docker-compose.yml'
       - 'ci/**'
       - 'cpp/**'
       - 'c_glib/**'
