@@ -17,7 +17,7 @@
 
 #' @include arrow-package.R
 
-#' @title class arrow::Message
+#' @title class Message
 #'
 #' @usage NULL
 #' @format NULL
