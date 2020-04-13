@@ -3,9 +3,9 @@
 \docType{class}
 \name{Message}
 \alias{Message}
-\title{class arrow::Message}
+\title{class Message}
 \description{
-class arrow::Message
+class Message
 }
 \section{Methods}{
 
