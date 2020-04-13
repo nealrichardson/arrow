@@ -76,7 +76,7 @@ jobs:
         if: env.R_DOCS == 'true'
       - name: Update R docs
         if: env.R_DOCS == 'true'
-        shell: Rscript
+        shell: Rscript {0}
         run: |
           source("ci/etc/rprofile")
           install.packages(c("remotes", "roxygen2"))
