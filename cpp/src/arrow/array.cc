@@ -77,11 +77,7 @@ std::shared_ptr<ArrayData> ArrayData::Make(
                                      std::move(child_data), null_count, offset);
 }
 
-std::shared_ptr<ArrayData> ArrayData::Make(
-    const std::shared_ptr<DataType>& type, int64_t length,
-    std::vector<std::shared_ptr<Buffer>> buffers,
-    std::vector<std::shared_ptr<ArrayData>> child_data, std::shared_ptr<Array> dictionary,
-    int64_t null_count, int64_t offset) {
+std::shared_ptr<ArrayData> ArrayData::Make(const std::shared_ptr<DataType>& type, int64_t length, std::vector<std::shared_ptr<Buffer>> buffers, std::vector<std::shared_ptr<ArrayData>> child_data, std::shared_ptr<Array> dictionary, int64_t null_count, int64_t offset) {
   if (buffers.size() > 0 && null_count == 0) {
     buffers[0] = nullptr;
   }

@@ -23,10 +23,6 @@
 #' @format NULL
 #' @docType class
 #'
-#' @section Methods:
-#'
-#' TODO
-#'
 #' @rdname DictionaryType
 #' @name DictionaryType
 DictionaryType <- R6Class("DictionaryType",
