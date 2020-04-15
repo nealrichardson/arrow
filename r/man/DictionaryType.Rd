@@ -7,9 +7,3 @@
 \description{
 class DictionaryType
 }
-\section{Methods}{
-
-
-TODO
-}
-
