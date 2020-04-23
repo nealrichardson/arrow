@@ -19,6 +19,9 @@
 
 # Apache Arrow
 
+
+
+
 [![Build Status](https://ci.appveyor.com/api/projects/status/github/apache/arrow/branch/master?svg=true)](https://ci.appveyor.com/project/ApacheSoftwareFoundation/arrow/branch/master)
 [![Coverage Status](https://codecov.io/gh/apache/arrow/branch/master/graph/badge.svg)](https://codecov.io/gh/apache/arrow?branch=master)
 [![Fuzzing Status](https://oss-fuzz-build-logs.storage.googleapis.com/badges/arrow.svg)](https://bugs.chromium.org/p/oss-fuzz/issues/list?sort=-opened&can=1&q=proj:arrow)
