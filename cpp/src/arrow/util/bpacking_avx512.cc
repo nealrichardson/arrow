@@ -15,7 +15,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
+#if defined(ARROW_HAVE_RUNTIME_AVX512)
+
 #include "arrow/util/bpacking_avx512.h"
+
 #include "arrow/util/bpacking_avx512_generated.h"
 #include "arrow/util/logging.h"
 
@@ -135,3 +138,5 @@ int unpack32_avx512(const uint32_t* in, uint32_t* out, int batch_size, int num_b
 
 }  // namespace internal
 }  // namespace arrow
+
+#endif
