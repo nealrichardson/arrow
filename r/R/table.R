@@ -101,6 +101,7 @@ Table <- R6Class("Table", inherit = ArrowObject,
       assert_that(length(name) == 1)
       shared_ptr(ChunkedArray, Table__GetColumnByName(self, name))
     },
+    RemoveColumn = function(i) shared_ptr(Table, Table__RemoveColumn(self, i)),
     field = function(i) shared_ptr(Field, Table__field(self, i)),
 
     serialize = function(output_stream, ...) write_table(self, output_stream, ...),
@@ -253,6 +254,17 @@ names.Table <- function(x) x$ColumnNames()
 
 #' @export
 `[[.Table` <- `[[.RecordBatch`
+
+#' @export
+`[[<-.Table` <- function(x, i, value) {
+  if (is.null(value)) {
+    if (is.character(i)) {
+      i <- match(i, names(x)) - 1L
+    }
+    x <- x$RemoveColumn(i)
+  }
+  x
+}
 
 #' @export
 `$.Table` <- `$.RecordBatch`

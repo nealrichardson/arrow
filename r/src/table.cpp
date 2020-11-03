@@ -115,6 +115,12 @@ std::shared_ptr<arrow::ChunkedArray> Table__GetColumnByName(
 }
 
 // [[arrow::export]]
+std::shared_ptr<arrow::Table> Table__RemoveColumn(
+    const std::shared_ptr<arrow::Table>& table, R_xlen_t i) {
+  return ValueOrStop(table->RemoveColumn(i));
+}
+
+// [[arrow::export]]
 std::shared_ptr<arrow::Table> Table__SelectColumns(
     const std::shared_ptr<arrow::Table>& table, const std::vector<int>& indices) {
   return ValueOrStop(table->SelectColumns(indices));

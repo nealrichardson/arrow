@@ -145,7 +145,28 @@ test_that("[, [[, $ for Table", {
   expect_data_frame(tab[0], tbl[0])
 })
 
+test_that("[[<- assignment", {
+  tbl <- tibble::tibble(
+    int = 1:10,
+    dbl = as.numeric(1:10),
+    lgl = sample(c(TRUE, FALSE, NA), 10, replace = TRUE),
+    chr = letters[1:10],
+    fct = factor(letters[1:10])
+  )
+  tab <- Table$create(tbl)
+  tab[["chr"]] <- NULL
+  expect_data_frame(tab, tbl[-4])
+})
+
 test_that("Table$Slice", {
+  tbl <- tibble::tibble(
+    int = 1:10,
+    dbl = as.numeric(1:10),
+    lgl = sample(c(TRUE, FALSE, NA), 10, replace = TRUE),
+    chr = letters[1:10],
+    fct = factor(letters[1:10])
+  )
+  tab <- Table$create(tbl)
   tab2 <- tab$Slice(5)
   expect_data_frame(tab2, tbl[6:10,])
 
