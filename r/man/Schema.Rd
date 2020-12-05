@@ -19,6 +19,8 @@ default mapping of R types to Arrow types, such as when you want to choose a
 specific numeric precision, or when creating a \link{Dataset} and you want to
 ensure a specific schema rather than inferring it from the various files.
 
+words
+
 Many Arrow objects, including \link{Table} and \link{Dataset}, have a \verb{$schema} method
 (active binding) that lets you access their schema.
 }

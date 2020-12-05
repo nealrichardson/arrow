@@ -25,6 +25,8 @@
 #' specific numeric precision, or when creating a [Dataset] and you want to
 #' ensure a specific schema rather than inferring it from the various files.
 #'
+#' words
+#'
 #' Many Arrow objects, including [Table] and [Dataset], have a `$schema` method
 #' (active binding) that lets you access their schema.
 #'
