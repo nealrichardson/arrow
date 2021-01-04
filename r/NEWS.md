@@ -29,10 +29,11 @@
 
 ## Enhancements
 
-* Table columns can now be added, replaced, or removed by assigning `<-` with either `$` or `[[`
+* Table columns can now be added, replaced, or removed by assigning (`<-`) with either `$` or `[[`
 * Column names of Tables and RecordBatches can be renamed by assigning `names()`
 * Large string types can now be written to Parquet files
-* The [pronouns `.data` and `.env`](https://rlang.r-lib.org/reference/tidyeval-data.html) are now fully supported in Arrow-dplyr pipelines.
+* The [pronouns `.data` and `.env`](https://rlang.r-lib.org/reference/tidyeval-data.html) are now fully supported in Arrow `dplyr` pipelines.
+* Option `arrow.skip_nul` (default `FALSE`, as in `base::scan()`) allows conversion of Arrow string (`utf8()`) type data containing embedded nul `\0` characters to R. If set to `TRUE`, nuls will be stripped and a warning is emitted if any are found.
 
 ## Bug fixes
 
