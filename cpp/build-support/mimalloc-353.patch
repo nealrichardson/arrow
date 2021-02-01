@@ -12,11 +12,11 @@ index db1b773..54562d1 100644
 --- a/src/heap.c
 +++ b/src/heap.c
 @@ -359,7 +359,7 @@ static void mi_heap_absorb(mi_heap_t* heap, mi_heap_t* from) {
-   // turns out to be ok as `_mi_heap_delayed_free` only visits the list and calls a 
+   // turns out to be ok as `_mi_heap_delayed_free` only visits the list and calls a
    // the regular `_mi_free_delayed_block` which is safe.
-   _mi_heap_delayed_free(from);  
+   _mi_heap_delayed_free(from);
 -  mi_assert_internal(from->thread_delayed_free == NULL);
-+  mi_assert_internal(mi_atomic_load_ptr_relaxed(mi_block_t,&from->thread_delayed_free) == NULL);
- 
++  mi_assert_internal( (mi_atomic_load_ptr_relaxed(mi_block_t, &from->thread_delayed_free)) == NULL);
+
    // and reset the `from` heap
-   mi_heap_reset_pages(from);  
+   mi_heap_reset_pages(from);
