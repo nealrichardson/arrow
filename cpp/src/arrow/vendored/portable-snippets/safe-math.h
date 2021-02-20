@@ -58,11 +58,16 @@
 #  define PSNIP_SAFE__FUNCTION PSNIP_SAFE__COMPILER_ATTRIBUTES static PSNIP_SAFE__INLINE
 #endif
 
+// Arrow is C++11, so we can just define this
+// Works around "_Bool does not name a type" error on Solaris gcc 5
+#define psnip_safe_bool bool
+/*
 #if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
 #  define psnip_safe_bool _Bool
 #else
 #  define psnip_safe_bool int
 #endif
+*/
 
 #if !defined(PSNIP_SAFE_NO_FIXED)
 /* For maximum portability include the exact-int module from
