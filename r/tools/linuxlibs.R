@@ -39,7 +39,7 @@ build_ok <- !env_is("LIBARROW_BUILD", "false")
 # But binary defaults to not OK
 binary_ok <- !identical(tolower(Sys.getenv("LIBARROW_BINARY", "false")), "false")
 # For local debugging, set ARROW_R_DEV=TRUE to make this script print more
-quietly <- !env_is("ARROW_R_DEV", "true")
+quietly <- FALSE
 
 try_download <- function(from_url, to_file) {
   status <- try(
