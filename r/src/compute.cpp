@@ -128,6 +128,30 @@ SEXP from_datum(arrow::Datum datum) {
 
 std::shared_ptr<arrow::compute::FunctionOptions> make_compute_options(
     std::string func_name, cpp11::list options) {
+  if (func_name == "group_by") {
+    // options is a list of pairs: string function name, list of options
+
+    arrow::compute::GroupByOptions out;
+    // need to sidecar some keepalives to the output since GroupByOptions
+    // does not take ownership of "child" FunctionOptions
+    struct {
+      void operator()(arrow::compute::GroupByOptions* opts) const { delete opts; }
+      std::vector<std::shared_ptr<arrow::compute::FunctionOptions>> keep_alives;
+    } destructor;
+
+    for (cpp11::list name_opts : options) {
+      auto name = cpp11::as_cpp<std::string>(name_opts[0]);
+      auto opts = make_compute_options(name, name_opts[1]);
+
+      out.aggregates.push_back(
+          arrow::compute::GroupByOptions::Aggregate{std::move(name), opts.get()});
+      destructor.keep_alives.push_back(std::move(opts));
+    }
+
+    return std::shared_ptr<arrow::compute::GroupByOptions>(
+        new arrow::compute::GroupByOptions{std::move(out)}, std::move(destructor));
+  }
+
   if (func_name == "filter") {
     using Options = arrow::compute::FilterOptions;
     auto out = std::make_shared<Options>(Options::Defaults());
