@@ -39,7 +39,7 @@ build_ok <- !env_is("LIBARROW_BUILD", "false")
 # But binary defaults to not OK
 binary_ok <- !identical(tolower(Sys.getenv("LIBARROW_BINARY", "false")), "false")
 # For local debugging, set ARROW_R_DEV=TRUE to make this script print more
-quietly <- !env_is("ARROW_R_DEV", "true")
+quietly <- FALSE
 
 try_download <- function(from_url, to_file) {
   status <- try(
@@ -324,7 +324,7 @@ build_libarrow <- function(src_dir, dst_dir) {
   env_vars <- with_mimalloc(env_vars)
   if (tolower(Sys.info()[["sysname"]]) %in% "sunos") {
     # jemalloc doesn't seem to build on Solaris
-    env_vars <- paste(env_vars, "ARROW_JEMALLOC=OFF")
+    env_vars <- paste(env_vars, "ARROW_JEMALLOC=OFF ARROW_PARQUET=OFF ARROW_WITH_RE2=OFF ARROW_WITH_UTF8PROC=OFF EXTRA_CMAKE_FLAGS=-DARROW_SIMD_LEVEL=NONE")
   }
   cat("**** arrow", ifelse(quietly, "", paste("with", env_vars)), "\n")
   status <- system(
