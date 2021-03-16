@@ -148,7 +148,7 @@ else
         # TODO: what about non-bundled deps?
         BUNDLED_LIBS=`cd $LIB_DIR && ls *.a`
         echo $BUNDLED_LIBS
-        BUNDLED_LIBS=`echo "$BUNDLED_LIBS" | sed -e "s/\\.a lib/ -l/g" | sed -e "s/\\.a$//"| sed -e "s/^lib/-l/"`
+        BUNDLED_LIBS=`echo "$BUNDLED_LIBS" | sed -e "s/\\.a lib/ -l/g" | sed -e "s/\\.a$//" | sed -e "s/^lib/-l/" | tr '\n' ' ' | sed -e "s/ $//"`
         echo $BUNDLED_LIBS
         PKG_DIRS="-L`pwd`/$LIB_DIR"
       fi
