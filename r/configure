@@ -147,7 +147,7 @@ else
         #
         # TODO: what about non-bundled deps?
         BUNDLED_LIBS=`cd $LIB_DIR && ls *.a`
-        BUNDLED_LIBS=`echo $BUNDLED_LIBS | sed -E "s/lib(.*)\.a/-l\1/" | sed -e "s/\\.a lib/ -l/g"`
+        BUNDLED_LIBS=`echo "-l$BUNDLED_LIBS" | sed "s/\\.a / -l/g" | sed "s/\\.a$//"`
         PKG_DIRS="-L$(pwd)/$LIB_DIR"
       fi
     fi
@@ -185,7 +185,7 @@ if [ $? -eq 0 ] || [ "$UNAME" = "Darwin" ]; then
   # Always build with arrow on macOS
   PKG_CFLAGS="$PKG_CFLAGS -DARROW_R_WITH_ARROW"
   # Check for features
-  LIB_DIR=`echo $PKG_DIRS | sed -e 's/^-L//'`
+  LIB_DIR=`echo $PKG_DIRS | sed 's/^-L//'`
   ARROW_OPTS_CMAKE="$LIB_DIR/cmake/arrow/ArrowOptions.cmake"
   # Check for Parquet
   grep 'set(ARROW_PARQUET "ON")' $ARROW_OPTS_CMAKE >/dev/null 2>&1
