@@ -134,7 +134,7 @@ else
         LIBARROW_MINIMAL=false; export LIBARROW_MINIMAL
       fi
       ${R_HOME}/bin/Rscript tools/linuxlibs.R $VERSION
-      PKG_CFLAGS="-I$(pwd)/libarrow/arrow-${VERSION}/include $PKG_CFLAGS"
+      PKG_CFLAGS="-I`pwd`/libarrow/arrow-${VERSION}/include $PKG_CFLAGS"
 
       LIB_DIR="libarrow/arrow-${VERSION}/lib"
       if [ -d "$LIB_DIR" ]; then
@@ -147,8 +147,10 @@ else
         #
         # TODO: what about non-bundled deps?
         BUNDLED_LIBS=`cd $LIB_DIR && ls *.a`
-        BUNDLED_LIBS=`echo "-l$BUNDLED_LIBS" | sed -e "s/\\.a / -l/g" | sed -e "s/\\.a$//"`
-        PKG_DIRS="-L$(pwd)/$LIB_DIR"
+        echo $BUNDLED_LIBS
+        BUNDLED_LIBS=`echo "$BUNDLED_LIBS" | sed -e "s/\\.a lib/ -l/g" | sed -e "s/\\.a$//"| sed -e "s/^lib/-l/"`
+        echo $BUNDLED_LIBS
+        PKG_DIRS="-L`pwd`/$LIB_DIR"
       fi
     fi
   fi
@@ -179,6 +181,7 @@ else
 fi
 CPPFLAGS=`"${R_HOME}"/bin/R CMD config CPPFLAGS`
 TEST_CMD="${CXXCPP} ${CPPFLAGS} ${PKG_CFLAGS} ${CXX11FLAGS} ${CXX11STD} -xc++ -"
+echo "$TEST_CMD"
 echo "#include $PKG_TEST_HEADER" | ${TEST_CMD} >/dev/null 2>&1
 
 if [ $? -eq 0 ] || [ "$UNAME" = "Darwin" ]; then
