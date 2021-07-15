@@ -280,6 +280,26 @@ io___CompressedInputStream__Make <- function(codec, raw){
     .Call(`_arrow_io___CompressedInputStream__Make`, codec, raw)
 }
 
+ExecPlan_create <- function(){
+    .Call(`_arrow_ExecPlan_create`)
+}
+
+ExecPlan_run <- function(plan, final_node){
+    .Call(`_arrow_ExecPlan_run`, plan, final_node)
+}
+
+ExecNode_Scan <- function(plan, dataset, filter, materialized_field_names){
+    .Call(`_arrow_ExecNode_Scan`, plan, dataset, filter, materialized_field_names)
+}
+
+ExecNode_Filter <- function(input, filter){
+    .Call(`_arrow_ExecNode_Filter`, input, filter)
+}
+
+ExecNode_Project <- function(input, exprs, names){
+    .Call(`_arrow_ExecNode_Project`, input, exprs, names)
+}
+
 RecordBatch__cast <- function(batch, schema, options){
     .Call(`_arrow_RecordBatch__cast`, batch, schema, options)
 }
