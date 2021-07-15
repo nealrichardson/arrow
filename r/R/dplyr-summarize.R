@@ -31,7 +31,7 @@ summarise.arrow_dplyr_query <- function(.data, ...) {
   .data <- dplyr::select(.data, vars_to_keep)
   if (isTRUE(getOption("arrow.summarize", FALSE))) {
     # Try stuff, if successful return()
-    out <- do_arrow_summarize(.data, ...)
+    out <- try(do_arrow_summarize(.data, ...), silent = TRUE)
     if (inherits(out, "try-error")) {
       return(abandon_ship(call, .data, format(out)))
     } else {
