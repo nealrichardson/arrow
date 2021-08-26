@@ -17,7 +17,7 @@
   under the License.
 -->
 
-# arrow 5.0.0.1
+# arrow 5.0.0.2
 
 This patch version contains fixes for some sanitizer and compiler warnings.
 
