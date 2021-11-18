@@ -19,6 +19,14 @@
 
 # arrow 6.0.1
 
+* Joins now support inclusion of dictionary columns, and multiple crashes have been fixed
+* Grouped aggregation no longer crashes when working on data that has been filtered down to 0 rows
+* Bindings added for `str_count()` in dplyr queries
+* Work around a critical bug in the AWS SDK for C++ that could affect S3 multipart upload
+* A UBSAN warning in the round kernel has been resolved
+* Fixes for build failures on Solaris and on old versions of macOS
+# arrow 6.0.0
+
 There are now two ways to query Arrow data:
 
 ## 1. Expanded Arrow-native queries: aggregation and joins
@@ -56,7 +64,7 @@ You can also take a duckdb `tbl` and call `to_arrow()` to stream data to Arrow's
 
 * Package installation now fails if the Arrow C++ library does not compile. In previous versions, if the C++ library failed to compile, you would get a successful R package installation that wouldn't do much useful.
 * You can disable all optional C++ components when building from source by setting the environment variable `LIBARROW_MINIMAL=true`. This will have the core Arrow/Feather components but excludes Parquet, Datasets, compression libraries, and other optional features.
-* Source packages now bundle the Arrow C++ source code, so it does not have to be downloaded in order to build the package. Because the source is included, it is now possible to build the package on an offline/airgapped system. By default, the offline build will be minimal because it cannot download third-party C++ dependencies required to support all features. To allow a fully featured offline build, the included `create_package_with_all_dependencies()` function (also available on GitHub without installing the arrow package) will download all third-party C++ dependencies and bundle them inside the R source package. Run this function on a system connected to the network to produce the "fat" source package, then copy that .tar.gz package to your offline machine and install. Special thanks to @karldw for the huge amount of work on this. 
+* Source packages now bundle the Arrow C++ source code, so it does not have to be downloaded in order to build the package. Because the source is included, it is now possible to build the package on an offline/airgapped system. By default, the offline build will be minimal because it cannot download third-party C++ dependencies required to support all features. To allow a fully featured offline build, the included `create_package_with_all_dependencies()` function (also available on GitHub without installing the arrow package) will download all third-party C++ dependencies and bundle them inside the R source package. Run this function on a system connected to the network to produce the "fat" source package, then copy that .tar.gz package to your offline machine and install. Special thanks to @karldw for the huge amount of work on this.
 * Source builds can make use of system dependencies (such as `libz`) by setting `ARROW_DEPENDENCY_SOURCE=AUTO`. This is not the default in this release (`BUNDLED`, i.e. download and build all dependencies) but may become the default in the future.
 * The JSON library components (`read_json_arrow()`) are now optional and still on by default; set `ARROW_JSON=OFF` before building to disable them.
 
