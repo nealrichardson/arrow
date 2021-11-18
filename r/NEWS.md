@@ -208,7 +208,7 @@ Over 100 functions can now be called on Arrow objects inside a `dplyr` verb:
 * Table columns can now be added, replaced, or removed by assigning (`<-`) with either `$` or `[[`
 * Column names of Tables and RecordBatches can be renamed by assigning `names()`
 * Large string types can now be written to Parquet files
-* The [pronouns `.data` and `.env`](https://rlang.r-lib.org/reference/tidyeval-data.html) are now fully supported in Arrow `dplyr` pipelines.
+* The `rlang` pronouns `.data` and `.env` are now fully supported in Arrow `dplyr` pipelines.
 * Option `arrow.skip_nul` (default `FALSE`, as in `base::scan()`) allows conversion of Arrow string (`utf8()`) type data containing embedded nul `\0` characters to R. If set to `TRUE`, nuls will be stripped and a warning is emitted if any are found.
 * `arrow_info()` for an overview of various run-time and build-time Arrow configurations, useful for debugging
 * Set environment variable `ARROW_DEFAULT_MEMORY_POOL` before loading the Arrow package to change memory allocators. Windows packages are built with `mimalloc`; most others are built with both `jemalloc` (used by default) and `mimalloc`. These alternative memory allocators are generally much faster than the system memory allocator, so they are used by default when available, but sometimes it is useful to turn them off for debugging purposes. To disable them, set `ARROW_DEFAULT_MEMORY_POOL=system`.

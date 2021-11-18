@@ -158,6 +158,11 @@ compare_dplyr_error <- function(expr,
     error = function(e) {
       msg <- conditionMessage(e)
 
+      # For compatibility with dplyr 1.0.8
+      if (grepl("Problem while computing", msg[1])) {
+        msg <- conditionMessage(e$parent)
+      }
+
       # The error here is of the form:
       #
       # Problem with `filter()` .input `..1`.
@@ -207,11 +212,11 @@ compare_dplyr_error <- function(expr,
 #' @param ignore_attr Ignore differences in specified attributes?
 #' @param ... additional arguments, passed to `expect_as_vector()`
 compare_expression <- function(expr,
-                           vec,
-                           skip_array = NULL,
-                           skip_chunked_array = NULL,
-                           ignore_attr = FALSE,
-                           ...) {
+                               vec,
+                               skip_array = NULL,
+                               skip_chunked_array = NULL,
+                               ignore_attr = FALSE,
+                               ...) {
   expr <- rlang::enquo(expr)
   expected <- rlang::eval_tidy(expr, rlang::new_data_mask(rlang::env(.input = vec)))
   skip_msg <- NULL
@@ -254,10 +259,10 @@ compare_expression <- function(expr,
 #' @param skip_chunked_array The skip message to show (if you should skip the ChunkedArray test)
 #' @param ... additional arguments, passed to `expect_error()`
 compare_expression_error <- function(expr,
-                                 vec,
-                                 skip_array = NULL,
-                                 skip_chunked_array = NULL,
-                                 ...) {
+                                     vec,
+                                     skip_array = NULL,
+                                     skip_chunked_array = NULL,
+                                     ...) {
   expr <- rlang::enquo(expr)
 
   msg <- tryCatch(
