@@ -25,6 +25,7 @@
 * Work around a critical bug in the AWS SDK for C++ that could affect S3 multipart upload
 * A UBSAN warning in the round kernel has been resolved
 * Fixes for build failures on Solaris and on old versions of macOS
+
 # arrow 6.0.0
 
 There are now two ways to query Arrow data:
