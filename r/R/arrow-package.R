@@ -138,3 +138,11 @@ option_use_threads <- function() {
 option_compress_metadata <- function() {
   !is_false(getOption("arrow.compress_metadata"))
 }
+
+# Restore this to suppress sparklyr warning
+
+#' Use `write_ipc_stream` or `write_to_raw` instead.
+#' @param ... Ignored arguments
+#' @export
+#' @keywords internal
+write_arrow <- function(...) stop("write_arrow has been removed")

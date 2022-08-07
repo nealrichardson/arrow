@@ -81,6 +81,9 @@ test_that("arrow_scalar_function() works with auto_convert = TRUE", {
 
 test_that("register_scalar_function() adds a compute function to the registry", {
   skip_if_not(CanRunWithCapturedR())
+  # TODO(ARROW-17178): User-defined function-friendly ExecPlan execution has
+  # occasional valgrind errors
+  skip_on_linux_devel()
 
   register_scalar_function(
     "times_32",
@@ -109,6 +112,8 @@ test_that("register_scalar_function() adds a compute function to the registry", 
       dplyr::collect(),
     tibble::tibble(a = 1L, b = 32.0)
   )
+
+  Sys.unsetenv("R_ARROW_COLLECT_WITH_UDF")
 })
 
 test_that("arrow_scalar_function() with bad return type errors", {
@@ -143,6 +148,9 @@ test_that("arrow_scalar_function() with bad return type errors", {
     call_function("times_32_bad_return_type_scalar", Array$create(1L)),
     "Expected return Array or Scalar with type 'double'"
   )
+
+  # TODO(ARROW-17178) remove the need for this!
+  Sys.unsetenv("R_ARROW_COLLECT_WITH_UDF")
 })
 
 test_that("register_user_defined_function() can register multiple kernels", {
@@ -203,12 +211,18 @@ test_that("register_user_defined_function() errors for unsupported specification
     ),
     "Kernels for user-defined function must accept the same number of arguments"
   )
+
+  # TODO(ARROW-17178) remove the need for this!
+  Sys.unsetenv("R_ARROW_COLLECT_WITH_UDF")
 })
 
 test_that("user-defined functions work during multi-threaded execution", {
   skip_if_not(CanRunWithCapturedR())
   skip_if_not_available("dataset")
-  # Snappy has a UBSan issue: https://github.com/google/snappy/pull/148
+  # Skip on linux devel because:
+  # TODO(ARROW-17283): Snappy has a UBSan issue that is fixed in the dev version
+  # TODO(ARROW-17178): User-defined function-friendly ExecPlan execution has
+  # occasional valgrind errors
   skip_on_linux_devel()
 
   n_rows <- 10000
@@ -255,6 +269,9 @@ test_that("user-defined functions work during multi-threaded execution", {
     dplyr::collect()
 
   expect_identical(result2$fun_result, example_df$value * 32)
+
+  # TODO(ARROW-17178) remove the need for this!
+  Sys.unsetenv("R_ARROW_COLLECT_WITH_UDF")
 })
 
 test_that("user-defined error when called from an unsupported context", {
@@ -271,7 +288,7 @@ test_that("user-defined error when called from an unsupported context", {
   on.exit(unregister_binding("times_32", update_cache = TRUE))
 
   stream_plan_with_udf <- function() {
-   record_batch(a = 1:1000) %>%
+    record_batch(a = 1:1000) %>%
       dplyr::mutate(b = times_32(a)) %>%
       as_record_batch_reader() %>%
       as_arrow_table()
@@ -304,4 +321,7 @@ test_that("user-defined error when called from an unsupported context", {
       "Call to R \\(.*?\\) from a non-R thread from an unsupported context"
     )
   }
+
+  # TODO(ARROW-17178) remove the need for this!
+  Sys.unsetenv("R_ARROW_COLLECT_WITH_UDF")
 })
