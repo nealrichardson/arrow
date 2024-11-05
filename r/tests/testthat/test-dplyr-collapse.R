@@ -165,7 +165,7 @@ test_that("Properties of collapsed query", {
     "Table (query)
 lgl: bool
 total: int64
-extra: int64 (multiply_checked(total, 5))
+extra: int64 (total * 5)
 
 * Sorted by lgl [asc]
 See $.data for the source Arrow object",

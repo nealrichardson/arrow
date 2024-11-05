@@ -126,10 +126,7 @@ print.arrow_dplyr_query <- function(x, ...) {
       schm$GetFieldByName(name)$type$ToString()
     } else {
       # Expression, so get its type and append the expression
-      paste0(
-        expr$type(schm)$ToString(),
-        " (", expr$ToString(), ")"
-      )
+      paste(expr$type(schm)$ToString(), parenthetical(pprint_expression(expr)))
     }
   })
   fields <- paste(names(types), types, sep = ": ", collapse = "\n")
@@ -142,14 +139,14 @@ print.arrow_dplyr_query <- function(x, ...) {
     cat(aggs, "\n", sep = "")
   }
   if (!isTRUE(x$filtered_rows)) {
-    filter_string <- x$filtered_rows$ToString()
+    filter_string <- pprint_expression(x$filtered_rows)
     cat("* Filter: ", filter_string, "\n", sep = "")
   }
   if (length(x$group_by_vars)) {
     cat("* Grouped by ", paste(x$group_by_vars, collapse = ", "), "\n", sep = "")
   }
   if (length(x$arrange_vars)) {
-    arrange_strings <- map_chr(x$arrange_vars, function(x) x$ToString())
+    arrange_strings <- map_chr(x$arrange_vars, pprint_expression)
     cat(
       "* Sorted by ",
       paste(
@@ -165,6 +162,40 @@ print.arrow_dplyr_query <- function(x, ...) {
   }
   cat("See $.data for the source Arrow object\n")
   invisible(x)
+}
+
+# Prettier expression printing
+# Use this in print.arrow_dplyr_query and explain as they are simpler
+# Don't use this in show_query or show_exec_plan: show all details there
+pprint_expression <- function(x) {
+  # Input: An Expression, or the output of Expression$ToString()
+  if (inherits(x, "ArrowObject")) {
+    x <- x$ToString()
+  }
+
+  # These are all the default values, and they just clutter the output
+  opts <- c(
+    "allow_int_overflow=false", "allow_time_truncate=false",
+    "allow_time_overflow=false", "allow_decimal_truncate=false",
+    "allow_float_truncate=false", "allow_invalid_utf8=false"
+  )
+  # These will all be preceded by a comma because to_type is always first
+  x <- gsub(paste0(", (", paste(opts, collapse = "|"), ")"), "", x)
+
+  # Let's also replace arithmetic functions with the operator spelling
+  x <- gsub("add_checked\\((.*?), (.*?)\\)", "(\\1 + \\2)", x)
+  x <- gsub("subtract_checked\\((.*?), (.*?)\\)", "(\\1 - \\2)", x)
+  x <- gsub("multiply_checked\\((.*?), (.*?)\\)", "(\\1 * \\2)", x)
+  x <- gsub("divide_checked\\((.*?), (.*?)\\)", "(\\1 / \\2)", x)
+  x <- gsub("power_checked\\((.*?), (.*?)\\)", "(\\1 ^ \\2)", x)
+  x
+}
+
+parenthetical <- function(x) {
+  # Make x -> (x) if it's not already in parens
+  already_has_parens <- grepl("^\\(.*\\)$", x)
+  x[!already_has_parens] <- paste0("(", x[!already_has_parens], ")")
+  x
 }
 
 # These are the names reflecting all select/rename, not what is in Arrow

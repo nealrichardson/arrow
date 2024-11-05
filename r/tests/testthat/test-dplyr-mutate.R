@@ -545,7 +545,7 @@ test_that("print a mutated table", {
       print(),
     "Table (query)
 int: int32
-twice: int32 (multiply_checked(int, 2))
+twice: int32 (int * 2)
 
 See $.data for the source Arrow object",
     fixed = TRUE

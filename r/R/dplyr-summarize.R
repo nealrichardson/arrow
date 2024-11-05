@@ -241,7 +241,7 @@ group_types <- function(.data, schema = NULL) {
 }
 
 format_aggregation <- function(x) {
-  Expression$create(x$fun, args = x$data, options = x$options)$ToString()
+  pprint_expression(Expression$create(x$fun, args = x$data, options = x$options))
 }
 
 # This function evaluates an expression and returns the post-summarize

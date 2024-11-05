@@ -143,9 +143,9 @@ test_that("mutate()", {
 chr: string
 dbl: double
 int: int32
-twice: int32 (multiply_checked(int, 2))
+twice: int32 (int * 2)
 
-* Filter: ((multiply_checked(dbl, 2) > 14) and (subtract_checked(dbl, 50) < 3))
+* Filter: (((dbl * 2) > 14) and ((dbl - 50) < 3))
 See $.data for the source Arrow object",
     fixed = TRUE
   )
@@ -208,10 +208,10 @@ test_that("arrange()", {
 chr: string
 dbl: double
 int: int32
-twice: int32 (multiply_checked(int, 2))
+twice: int32 (int * 2)
 
-* Filter: ((multiply_checked(dbl, 2) > 14) and (subtract_checked(dbl, 50) < 3))
-* Sorted by chr [asc], multiply_checked(int, 2) [desc], add_checked(dbl, int) [asc]
+* Filter: (((dbl * 2) > 14) and ((dbl - 50) < 3))
+* Sorted by chr [asc], (int * 2) [desc], (dbl + int) [asc]
 See $.data for the source Arrow object",
     fixed = TRUE
   )
